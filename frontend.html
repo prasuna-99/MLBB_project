@@ -1,32 +1,34 @@
-<DOCTYPE html>
-<html>
-    <head>
-            <title>mobile legend project</title>
-            <link rel="stylesheet" href="style.css">
-          
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mobile Legend</title>
 
-        </head>
-        <script src="script.js"></script>
-    <body>
-        
-    <a class="opening">
-        <div>
-           <div class="flip-box">
-                 <div class="flip-box-inner">
-                    <div class="flip-box-front">
-                        <h1 id="welcome">WELCOME TO MOBILE LEGENDS</h1>
-                    </div>
-                    <div class="flip-box-back">
-                      <h2>Back Side</h2>
-                      <div class="loader"></div>
-                    </div>
-                    
-                </div>
-            </div>
-           
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- Loading Screen -->
+    <div class="loader">
+      <div class="loading-content">
+        <!--progress bar-->
+        <h1 class="percentage">0%</h1>
+
+        <div class="progress-bar">
+          <!--background track of progress bar-->
+          <div class="progress"></div>
+          <!--part that will grow-->
         </div>
+      </div>
+    </div>
 
-    </a>
-      </body>
+    <!-- Main Website -->
+    <main class="website">
+      <h1>Welcome to Mobile Legend</h1>
+    </main>
+
+    <script src="script.js"></script>
+    <!---The browser reads the <script> tag and starts executing script.js after the HTML is loaded-->
+  </body>
 </html>
-
