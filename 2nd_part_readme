@@ -1,0 +1,279 @@
+# Day 2 – JavaScript, CSS Classes, Loading Screen & Background Video
+
+## 1. Today's Learning Goals
+
+Today, I learned how HTML, CSS, and JavaScript work together to control a website. I practised JavaScript timing functions, dynamically adding and removing CSS classes, background video playback, and controlling the sequence of animations.
+
+## 2. Changes Made to the Loading Screen
+
+### Updated JavaScript
+
+```javascript
+const percentage = document.querySelector(".percentage");
+const progress = document.querySelector(".progress");
+const loader = document.querySelector(".loader");
+const website = document.querySelector(".website");
+const video = document.querySelector("#introVideo");
+
+let i = 0;
+
+let loading = setInterval(() => {
+  i++;
+
+  percentage.textContent = i + "%";
+  progress.style.width = i + "%";
+
+  if (i >= 100) {
+    clearInterval(loading);
+
+    loader.classList.add("hide");
+    website.classList.add("show");
+
+    setTimeout(() => {
+      video.currentTime = 0;
+      video.play();
+
+      website.classList.add("reveal-title");
+    }, 1000);
+  }
+}, 50);
+```
+
+### What changed?
+
+- The loading interval stops when the percentage reaches 100%.
+- The loader starts moving upward.
+- The website starts fading in immediately.
+- After 1 second, the background video starts playing.
+- The title reveal class is added to trigger the letter-by-letter animation.
+
+## 3. Background Video Logic
+
+### HTML – Adding the video
+
+```html
+<main class="website">
+  <video muted loop playsinline class="background-video" id="introVideo">
+    <source src="images/1.benedetaa.mp4" type="video/mp4" />
+  </video>
+
+  <div class="website-content">
+    <h1 class="animated-title">
+      <!-- Individual title letters -->
+    </h1>
+  </div>
+</main>
+```
+
+**Important HTML attributes:**
+
+| Attribute | Purpose |
+|---|---|
+| `muted` | Plays the video without sound. |
+| `loop` | Repeats the video after it finishes. |
+| `playsinline` | Allows inline playback on supported mobile browsers. |
+| `id="introVideo"` | Gives JavaScript a way to select the video. |
+| `src` | Specifies the video file location. |
+
+### CSS – Positioning the video
+
+```css
+.website {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.website-content {
+  position: absolute;
+  z-index: 1;
+}
+```
+
+**Important concepts:**
+
+- `position: absolute` positions the video inside its parent.
+- `object-fit: cover` fills the available area without stretching the video.
+- `z-index: 0` places the video behind the website content.
+- `z-index: 1` places the heading above the video.
+- `isolation: isolate` creates a separate stacking context for the website.
+
+### JavaScript – Controlling video playback
+
+```javascript
+const video = document.querySelector("#introVideo");
+
+video.currentTime = 0;
+video.play();
+```
+
+**What do these lines do?**
+
+- `currentTime = 0`: Resets playback to the beginning of the video.
+- `video.play()`: Requests the browser to start playing the video.
+
+The `video.play()` method returns a Promise, so playback can still be rejected by the browser. Muted playback generally makes autoplay easier, but does not guarantee it.
+
+### Background video execution sequence
+
+1. The video element already exists in HTML.
+2. CSS positions the video behind the heading.
+3. JavaScript selects the video using its ID.
+4. The loading screen reaches 100%.
+5. JavaScript resets the video to the beginning.
+6. JavaScript requests video playback.
+7. The title reveal class is added.
+
+## 4. How HTML, CSS and JavaScript Work Together
+
+| File | Responsibility | Project example |
+|---|---|---|
+| `index.html` | Structure | Creates loader, progress bar, video and heading. |
+| `style.css` | Presentation | Controls video positioning, opacity, transitions and animations. |
+| `script.js` | Behaviour | Updates loading percentage, controls video playback and changes classes. |
+
+**My understanding:**
+
+- HTML creates the elements and connects them to classes and IDs.
+- CSS defines their appearance and visual effects.
+- JavaScript controls behaviour, timing and when classes or styles change.
+
+## 5. Understanding Dynamic CSS Classes
+
+A class does not have to exist in the original HTML. JavaScript can add it dynamically.
+
+Original HTML:
+
+```html
+<main class="website">
+```
+
+JavaScript:
+
+```javascript
+website.classList.add("reveal-title");
+```
+
+After JavaScript executes:
+
+```html
+<main class="website reveal-title">
+```
+
+CSS:
+
+```css
+.website.reveal-title .animated-title span {
+  animation: cinematicReveal 1.2s forwards;
+}
+```
+
+The CSS selector matches after JavaScript adds the class, triggering the animation.
+
+Removing a class does not delete its CSS rule. It only removes that class from the element.
+
+## 6. JavaScript Concepts Practised
+
+| Concept | What I learned |
+|---|---|
+| `querySelector()` | Selects an HTML element using a CSS selector. |
+| `textContent` | Changes the text inside an element. |
+| `style.width` | Changes an element's width using JavaScript. |
+| `classList.add()` | Adds a class to an HTML element. |
+| `classList.remove()` | Removes a class from an HTML element. |
+| `setInterval()` | Repeats a function at a specified interval. |
+| `clearInterval()` | Stops a repeating interval. |
+| `setTimeout()` | Executes a function once after a specified delay. |
+| `currentTime` | Gets or sets the current playback position of a video. |
+| `play()` | Requests playback of a video. |
+
+### Understanding milliseconds
+
+- 1000 milliseconds = 1 second.
+- 200 milliseconds = 0.2 seconds.
+- 5000 milliseconds = 5 seconds.
+
+Changing the delay in `setTimeout()` changes when its callback executes.
+
+## 7. Questions and Answers – Today's Practice
+
+### Q1. What happens when `translateY(-100%)` is used?
+
+**Answer:** The loader moves upward by its entire own height.
+
+### Q2. What happens if the animation duration changes from 12 seconds to 5 seconds?
+
+**Answer:** The zoom animation becomes faster.
+
+### Q3. Which controls visual movement and which triggers it?
+
+**Answer:** CSS controls visual movement, while JavaScript triggers it by adding a class.
+
+### Q4. What does `setTimeout()` do?
+
+**Answer:** Executes its callback once after the specified delay.
+
+### Q5. What happens when opacity is 0?
+
+**Answer:** The element becomes transparent.
+
+### Q6. What happens if `setTimeout()` changes from 2000 to 5000?
+
+**Answer:** The callback waits 5 seconds before executing.
+
+### Q7. What happens if `website.classList.add("show")` is removed?
+
+**Answer:** The website will not become visible through the `.website.show` CSS rule.
+
+### Q8. What happens if `reveal-title` is moved outside `setTimeout()`?
+
+**Answer:** The title animation starts immediately when JavaScript adds the class instead of waiting for the timeout.
+
+### Q9. Does `reveal-title` need to exist in the original HTML?
+
+**Answer:** No. JavaScript can dynamically add the class, and CSS responds when its selector matches.
+
+### Q10. What does `classList.remove("reveal-title")` do?
+
+**Answer:** It removes only the `reveal-title` class, not the CSS animation itself.
+
+### Q11. What happens if `script.js` is removed but HTML and CSS remain?
+
+**Answer:** The website structure and styling remain, but JavaScript-driven behaviours such as the loading counter, automatic class changes and video-start sequence will not run.
+
+## 8. Important Things I Learned Today
+
+- JavaScript can dynamically modify HTML elements.
+- CSS selectors can respond to classes added by JavaScript.
+- `setTimeout()` does not pause the entire JavaScript program.
+- CSS transitions and animations control visual changes.
+- JavaScript controls the timing and order of those changes.
+- HTML, CSS and JavaScript have different responsibilities but work together.
+- Background video playback can be controlled through JavaScript.
+- `currentTime` resets video playback, while `play()` requests playback.
+
+## 9. Next Learning Topics
+
+1. Background video zoom animation using `transform: scale()`.
+2. CSS keyframes and animation duration.
+3. Dark cinematic overlay.
+4. Floating particles and light streaks.
+5. Synchronizing video, loader and title animations.
+
+---
+
+**Today's Progress:** Practised JavaScript timing, CSS class manipulation, background video playback, animation triggers, and the relationship between HTML, CSS and JavaScript.
+
+**Learning approach:** Understand the code, predict what happens, test the result, and learn why it works.
