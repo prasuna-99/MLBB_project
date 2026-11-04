@@ -1,0 +1,141 @@
+# Today's Learning Progress — Web Development
+
+## Topics Covered
+
+### 1. HTML Structure and Multiple Sections
+- Used `<main>` and `<section>` to organize different parts of a webpage.
+- Created separate full-screen sections for background videos.
+- Learned how normal document flow allows sections to appear one after another.
+- Understood why keeping the second section outside the first `<main>` helps with normal scrolling.
+
+### 2. CSS Positioning
+- `position: relative` keeps an element in the normal document flow and creates a positioning reference for absolute children.
+- `position: absolute` positions an element relative to its nearest positioned ancestor and removes it from normal document flow.
+- `position: fixed` positions an element relative to the viewport and removes it from normal document flow.
+- Used relative positioning on video sections and absolute positioning for background videos.
+
+### 3. Background Video Styling
+- Used `object-fit: cover` to fill a section without stretching the video.
+- Used `width: 100%` and `height: 100%` to fill the parent container.
+- Used `overflow: hidden` to prevent video content from extending visibly outside its section.
+- Used `muted`, `loop`, and `playsinline` attributes for background videos.
+
+### 4. CSS Overflow and Scrollbars
+Learned the difference between:
+
+| Property | Purpose |
+|---|---|
+| `overflow: hidden` | Clips overflowing content |
+| `overflow: auto` | Adds scrolling when needed |
+| `overflow: scroll` | Provides scrolling even when not needed |
+| `overflow-y: auto` | Handles vertical overflow |
+
+Also learned how to customize browser scrollbars:
+
+```css
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+```
+
+### 5. Smooth Scrolling
+- Learned that `scroll-behavior: smooth` makes navigation and programmatic scrolling smoother.
+- Understood that it does not make ordinary mouse-wheel scrolling smooth.
+- Learned about JavaScript's `scrollIntoView()` method.
+
+Example:
+
+```javascript
+document.querySelector("#contact").scrollIntoView({
+  behavior: "smooth"
+});
+```
+
+### 6. JavaScript classList
+Practiced dynamically changing CSS classes using JavaScript.
+
+```javascript
+element.classList.add("active");
+element.classList.remove("active");
+element.classList.toggle("active");
+element.classList.contains("active");
+```
+
+- `add()` adds a class.
+- `remove()` removes a class.
+- `toggle()` adds or removes a class depending on whether it exists.
+- `contains()` checks whether a class exists and returns a Boolean (`true` or `false`).
+
+### 7. Scroll Locking During the Loader
+Learned how to prevent users from scrolling while the loading screen is active.
+
+HTML:
+
+```html
+<body class="loading">
+```
+
+CSS:
+
+```css
+body.loading {
+  overflow: hidden;
+}
+```
+
+JavaScript:
+
+```javascript
+document.body.classList.remove("loading");
+```
+
+Removing the class allows scrolling again after the loading process finishes.
+
+## Practical Project Work
+
+Continued developing the **Mobile Legends / Akaza cinematic website** using HTML, CSS, and JavaScript.
+
+Worked on:
+- Full-screen loading screen with percentage and progress bar.
+- Loader transition and website reveal.
+- Background video integration.
+- Cinematic title reveal.
+- Multiple full-screen video sections.
+- Normal scrolling between sections.
+- Positioning and sizing background videos.
+- Preventing scrolling during the loading process.
+
+## Key Concepts to Remember
+
+- HTML provides the structure.
+- CSS controls layout, positioning, and visual effects.
+- JavaScript controls behavior and interactions.
+- Relative positioning is useful for containing absolutely positioned elements.
+- `object-fit: cover` helps background videos fill their sections.
+- `overflow` controls how content outside an element's boundaries is handled.
+- `classList` allows JavaScript to change CSS classes dynamically.
+
+## Next Learning Goals
+
+- Implement scroll-based animations.
+- Learn and use `IntersectionObserver`.
+- Play and pause background videos based on section visibility.
+- Add cinematic transitions between sections.
+- Improve responsive design for mobile and desktop.
+- Understand JavaScript event listeners more deeply.
+
+---
+
+**Learning focus:** HTML, CSS positioning, video backgrounds, overflow, scrolling, and JavaScript DOM manipulation.
