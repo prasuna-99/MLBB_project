@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
 
-  <body>
+  <body class="loading">
     <!-- Loading Screen -->
     <div class="loader">
       <div class="loading-content">
@@ -26,7 +26,7 @@
     <!-- Main Website -->
     <main class="website">
       <video muted loop playsinline class="background-video" id="introVideo">
-        <source src="images/1.benedetaa.mp4" type="video/mp4" />
+        <!--- <source src="images/croped benedetaa 2.mp4" type="video/mp4" />--  USED IN 2ND PART---->
       </video>
 
       <div class="website-content">
@@ -35,10 +35,16 @@
           ><span>e</span>
 
           <span>L</span><span>e</span><span>g</span><span>e</span><span>n</span
-          ><span>d</span>
+          ><span>d</span><span>s</span>
         </h1>
       </div>
     </main>
+
+    <section class="second-part">
+      <video autoplay muted loop class="second-background-video">
+        <source src="images/amon.mp4" type="video/mp4" />
+      </video>
+    </section>
 
     <script src="script.js"></script>
     <!---The browser reads the <script> tag and starts executing script.js after the HTML is loaded-->
