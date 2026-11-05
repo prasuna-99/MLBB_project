@@ -4,14 +4,18 @@ const loader = document.querySelector(".loader");
 const website = document.querySelector(".website");
 const video = document.querySelector("#introVideo");
 const videos = [
-  "images/croped benedetaa 2.mp4",
-  "images/kadita.mp4",
-  "images/kagura.mp4",
+  "video/benedata.mp4",
+  "video/kadita.mp4",
+  "video/1.kagura.mp4",
+  "video/natan .mp4",
 ];
 const randomIndex = Math.floor(Math.random() * videos.length);
 /* mathiko Generate a random index to select a video from the array */
 /* mathiko Math.floor() rounds down the random number to the nearest whole number, ensuring it is a valid index for the videos array. */
 /* mathiko Math.random() generates a random number between 0 and 1. Multiplying it by videos.length gives a random index within the range of the array. */
+const secondPart = document.querySelector(".second-part");
+
+const secondPartContent = document.querySelector(".second-part-content");
 
 let i = 0;
 
@@ -43,4 +47,13 @@ let loading = setInterval(() => {
       website.classList.add("reveal-title");
     }, 1000);
   }
-}, 50); /* Set the interval to 50 milliseconds for a smooth loading effect */
+}, 20); /* Set the interval to 50 milliseconds for a smooth loading effect */
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      secondPartContent.classList.add("show");
+      observer.unobserve(secondPart);
+    }
+  });
+});
