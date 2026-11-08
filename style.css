@@ -1,251 +1,77 @@
-/* width of scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
+history.scrollRestoration = "manual";
 
-/* Track the scrollbar */
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
+const percentage = document.querySelector(".percentage");
+const progress = document.querySelector(".progress");
+const loader = document.querySelector(".loader");
+const website = document.querySelector(".website");
+const video = document.querySelector("#introVideo");
+const videos = ["video/benedata.mp4", "video/kadita.mp4", "video/1.kagura.mp4"];
+const randomIndex = Math.floor(Math.random() * videos.length);
+/* mathiko Generate a random index to select a video from the array */
+/* mathiko Math.floor() rounds down the random number to the nearest whole number, ensuring it is a valid index for the videos array. */
+/* mathiko Math.random() generates a random number between 0 and 1. Multiplying it by videos.length gives a random index within the range of the array. */
 
-/*  The scrollbar */
-::-webkit-scrollbar-thumb {
-  background: #d01515;
-}
+const secondPart = document.querySelector(".second-part");
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-* {
-  margin: 0; /* Removes default outside spacing */
-  padding: 0;
-  box-sizing: border-box;
-}
+/*console.log(
+  "Scroll position:",
+  window.scrollY,
+); /*tells us the document is scrolled approximately 2685 pixel down from the its starting position*/
+/* 1,2 are used to debug the scroll restoration */
+/* 2...console.log(
+  "Second section position:",
+  secondPart.getBoundingClientRect().top,
+);secondPart.getBoundingClientRect().top = -300 means the top edge of the second section is 300px above the viewport.*/
 
-body {
-  font-family: adamina, sans-serif;
-}
-body.loading {
-  overflow: hidden; /* Prevents scrolling while the loader is active */
-}
-.loader {
-  position: fixed; /* It stays in the same place even when the page scrolls. */
-  top: 0;
-  left: 0;
+const secondPartContent = document.querySelector(".second-part-content");
 
-  width: 100%;
-  height: 100vh;
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        secondPartContent.classList.add("show");
 
-  /* transition:
-    opacity 0.8s ease,
-    visibility 0.8s ease;  used in part one to implement the fade away*/
+        observer.unobserve(secondPart);
+      }
+    });
+  },
+  {
+    threshold: 0.4 /* the observer triggers when appoximately 50% of the section section is visible*/,
+  },
+  /*.second-part tells JavaScript when the user reaches the second section.*/
+  /*.second-part-content is the element we actually want to animate.*/
+);
+let i = 0;
 
-  transition: transform 1s ease-in-out; /* Smooth transition for moving the loader out of view */
+let loading = setInterval(() => {
+  i++;
 
-  background-color: black;
-}
-.loading-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  percentage.textContent = i + "%"; /* Update the percentage text */
+  progress.style.width = i + "%"; /* Update the width of the progress bar */
 
-  transform: translate(-50%, -50%); /* Centers the content */
+  if (i >= 100) {
+    clearInterval(loading); /* Stop the loading when it reaches 100% */
+    /* mathiko (loading) identifies the timer we want to stop, and clearInterval stops it*/
+    loader.classList.add("hide"); /* Hide the loader */
 
-  width: 1000px; /* set the width of the progress bar */
-  text-align: center;
-}
-.percentage {
-  /* Percentage text */
-  color: white;
-  font-size: 350px;
-  font-weight: 400;
-  margin-bottom: 50px;
-}
-/* Progress Bar */
-.progress-bar {
-  width: 100%;
-  height: 30px;
-  background-color: rgb(236, 237, 234); /*loads in the progress bar*/
-  border-radius: 55px;
-  margin-top: 20px;
-}
+    website.classList.add("show"); /* Show the website content */
 
-.progress {
-  width: 0%; /*bar starts empty*/
-  height: 100%;
-  background-color: rgb(167, 225, 73); /*progress bar color*/
-  border-radius: 55px;
-}
-.loader.hide {
-  /* opacity: 0;
-  pointer-events: none;
-  visibility: hidden;   < used to part to make the loader fade away*/
-  transform: translateY(
-    -100%
-  ); /* Moves the loader out of view when the hide class is added */
-  pointer-events: none; /* Prevents user interaction with the loader and pointer interactions once the hide class is added*/
-}
-.website {
-  opacity: 0; /* Initially hide the website content */
-  position: relative; /* It stays in the same place even when the page scrolls. */
-  width: 100%;
-  height: 100vh;
+    document.body.classList.remove(
+      "loading",
+    ); /* Remove the loading class from the body to allow scrolling */
+    observer.observe(
+      secondPart,
+    ); /* once the animmation is tiggered thr observer stops watching thar section and makes the reveal happen */
 
-  transition: opacity 1s ease-in-out; /* Smooth transition for fading in */
-  overflow: hidden;
-  isolation: isolate; /* Ensures that the website content is isolated from the background video */
-}
-.website.show {
-  opacity: 1; /* Show the website content */
-}
-.website-content {
-  padding: 20px;
-  font-family: Adamina;
-  font-size: 150px;
-  color: white;
-  font-weight: 100;
-  position: absolute; /* Ensures the content is positioned relative to the website */
-  right: 100px;
-  bottom: 100px;
-  z-index: 1; /* Ensures the content is above the video */
-}
-.background-video {
-  position: absolute; /* Ensures the video is positioned relative to the website */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ensures the video covers the entire area */
-  z-index: 0; /* Places the video behind other content */
-}
+    video.src = videos[randomIndex];
+    /*mathiko Set the video source to a random video from the array */
+    video.load(); /* Load the new video source */
 
-/* Initially hide every letter */
-.animated-title span {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(70px);
-  filter: blur(12px);
-}
+    setTimeout(() => {
+      video.currentTime = 0; /* Reset the video to the beginning */
+      video.play(); /* Play the video */
 
-/* Start the reveal after the loader disappears */
-.website.reveal-title .animated-title span {
-  animation: cinematicReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* Stagger each letter */
-.website.reveal-title .animated-title span:nth-child(1) {
-  animation-delay: 0s;
-}
-.website.reveal-title .animated-title span:nth-child(2) {
-  animation-delay: 0.12s;
-}
-.website.reveal-title .animated-title span:nth-child(3) {
-  animation-delay: 0.24s;
-}
-.website.reveal-title .animated-title span:nth-child(4) {
-  animation-delay: 0.36s;
-}
-.website.reveal-title .animated-title span:nth-child(5) {
-  animation-delay: 0.48s;
-}
-.website.reveal-title .animated-title span:nth-child(6) {
-  animation-delay: 0.6s;
-}
-.website.reveal-title .animated-title span:nth-child(7) {
-  animation-delay: 0.72s;
-}
-.website.reveal-title .animated-title span:nth-child(8) {
-  animation-delay: 0.84s;
-}
-.website.reveal-title .animated-title span:nth-child(9) {
-  animation-delay: 0.96s;
-}
-.website.reveal-title .animated-title span:nth-child(10) {
-  animation-delay: 1.08s;
-}
-.website.reveal-title .animated-title span:nth-child(11) {
-  animation-delay: 1.2s;
-}
-.website.reveal-title .animated-title span:nth-child(12) {
-  animation-delay: 1.32s;
-}
-.website.reveal-title .animated-title span:nth-child(13) {
-  animation-delay: 1.44s;
-}
-
-/* Cinematic letter movement */
-@keyframes cinematicReveal {
-  0% {
-    opacity: 0;
-    transform: translateY(70px);
-    filter: blur(12px);
+      website.classList.add("reveal-title");
+    }, 1000);
   }
-
-  60% {
-    opacity: 1;
-    filter: blur(2px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-.second-part {
-  position: relative; /* Ensures the video is positioned relative to the section */
-  width: 100%;
-  height: 100vh;
-  overflow: hidden; /* Ensures the video doesn't overflow the section */
-  isolation: isolate; /* Ensures that the section content is isolated from the background video */
-}
-.second-background-video {
-  position: absolute; /* Ensures the video is positioned relative to the website */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  object-fit: cover; /* Ensures the video covers the entire area */
-}
-.second-part-content {
-  position: absolute; /* Ensures the content is positioned relative to the section */
-  width: 1400px;
-  height: 900px;
-  background-color: rgb(138, 133, 133, 0.3);
-  border-style: solid;
-  border-color: #dd8787;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 10px 5px rgba(221, 20, 81, 0.8);
-  border-radius: 50px;
-  margin-left: 500px;
-  margin-top: 300px;
-  z-index: 1;
-
-  transition:
-    opacity 1.2s ease,
-    transform 0.3s ease;
-}
-.second-part-content.show {
-  opacity: 1;
-}
-.second-part-content:hover {
-  transform: scale(1.05);
-}
-
-.content {
-  text-align: left;
-  font-size: 200px;
-  padding-left: 200px;
-  color: black;
-  z-index: 1; /* Ensures the content is above the video */
-}
-.description {
-  font-size: 70px;
-  font-family: Arial, sans-serif;
-  color: black;
-  line-height: 1.6;
-  padding: 20px 70px;
-  text-align: left;
-  font-weight: 400;
-}
+}, 20); /* Set the interval to 50 milliseconds for a smooth loading effect */
