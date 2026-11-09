@@ -1,4 +1,4 @@
-/*history.scrollRestoration = "manual";*/
+history.scrollRestoration = "manual";
 
 const percentage = document.querySelector(".percentage");
 const progress = document.querySelector(".progress");
