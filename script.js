@@ -1,4 +1,4 @@
-history.scrollRestoration = "manual";
+/*history.scrollRestoration = "manual";*/
 
 const percentage = document.querySelector(".percentage");
 const progress = document.querySelector(".progress");
@@ -12,6 +12,8 @@ const randomIndex = Math.floor(Math.random() * videos.length);
 /* mathiko Math.random() generates a random number between 0 and 1. Multiplying it by videos.length gives a random index within the range of the array. */
 
 const secondPart = document.querySelector(".second-part");
+const secondstripimage = document.querySelector(".second-strip-image");
+const track = document.querySelector(".track");
 
 /*console.log(
   "Scroll position:",
@@ -26,21 +28,32 @@ const secondPart = document.querySelector(".second-part");
 const secondPartContent = document.querySelector(".second-part-content");
 
 const observer = new IntersectionObserver(
-  (entries) => {
+  /* calculate scrollY of the document */ (entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         secondPartContent.classList.add("show");
 
+        secondPart.classList.add("reveal-content");
+
+        track.innerHTML += track.innerHTML;
+
+        secondstripimage.classList.add("shows");
+
         observer.unobserve(secondPart);
       }
-    });
+    }); /*The only code that knows about your 0.4 threshold is the observer.*/
   },
   {
-    threshold: 0.4 /* the observer triggers when appoximately 50% of the section section is visible*/,
+    threshold: 0.4 /* the observer triggers when appoximately 40% of the section section is visible*/,
   },
   /*.second-part tells JavaScript when the user reaches the second section.*/
   /*.second-part-content is the element we actually want to animate.*/
 );
+
+secondstripimage.classList.add("hidden");
+
+secondstripimage.classList.add("strip-animation");
+
 let i = 0;
 
 let loading = setInterval(() => {
@@ -59,9 +72,6 @@ let loading = setInterval(() => {
     document.body.classList.remove(
       "loading",
     ); /* Remove the loading class from the body to allow scrolling */
-    observer.observe(
-      secondPart,
-    ); /* once the animmation is tiggered thr observer stops watching thar section and makes the reveal happen */
 
     video.src = videos[randomIndex];
     /*mathiko Set the video source to a random video from the array */
@@ -72,6 +82,10 @@ let loading = setInterval(() => {
       video.play(); /* Play the video */
 
       website.classList.add("reveal-title");
-    }, 1000);
+    }, 1000); /* tells when to play the animation when the loader is disappear (after 1millisecond)*/
   }
 }, 20); /* Set the interval to 50 milliseconds for a smooth loading effect */
+
+observer.observe(
+  secondPart,
+); /*when 40% of .second-part is visible, the browser calls the observer’s function, which adds show to the panel. */
