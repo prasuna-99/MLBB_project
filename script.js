@@ -15,6 +15,9 @@ const secondPart = document.querySelector(".second-part");
 const secondstripimage = document.querySelector(".second-strip-image");
 const track = document.querySelector(".track");
 
+window.innerHeight;
+document.querySelector(".second-part").offsetHeight;
+
 /*console.log(
   "Scroll position:",
   window.scrollY,
@@ -37,7 +40,11 @@ const observer = new IntersectionObserver(
 
         track.innerHTML += track.innerHTML;
 
-        secondstripimage.classList.add("shows");
+        const strip = track.querySelectorAll("span");
+        strip.forEach((span, index) => {
+          /* forEach is a javascript array method that allows to perform an operation on evet item in a collection*/
+          span.style.transitionDelay = (index % 16) * 0.2 + "s";
+        }); /*Using % 16 makes the delay pattern repeat for the second set.*/
 
         observer.unobserve(secondPart);
       }
@@ -49,6 +56,24 @@ const observer = new IntersectionObserver(
   /*.second-part tells JavaScript when the user reaches the second section.*/
   /*.second-part-content is the element we actually want to animate.*/
 );
+observer.observe(
+  secondPart,
+); /*when 40% of .second-part is visible, the browser calls the observer’s function, which adds show to the panel. */
+
+const stripObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        secondstripimage.classList.add("shows");
+
+        stripObserver.unobserve(secondPart);
+      }
+    });
+  },
+  { threshold: 1 },
+);
+
+stripObserver.observe(secondPart);
 
 secondstripimage.classList.add("hidden");
 
@@ -85,7 +110,3 @@ let loading = setInterval(() => {
     }, 1000); /* tells when to play the animation when the loader is disappear (after 1millisecond)*/
   }
 }, 20); /* Set the interval to 50 milliseconds for a smooth loading effect */
-
-observer.observe(
-  secondPart,
-); /*when 40% of .second-part is visible, the browser calls the observer’s function, which adds show to the panel. */
