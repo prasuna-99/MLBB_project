@@ -294,17 +294,23 @@ body.loading {
 
 .second-strip-image.hidden {
   opacity: 0;
-  transform: translateY(100px);
 }
 .second-strip-image {
   overflow: hidden;
   padding-top: 1000px;
   z-index: 1;
+  /*mask: linear-gradient(90deg, #0000, red 20% 80%, #0000);*/
 }
 .second-strip-image span {
   padding: 10px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 10px 5px rgba(15, 17, 94, 0.8);
+  opacity: 0;
+  transform: translateY(150px);
+  transition:
+    transform 2s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 1s ease;
+}
+.second-strip-image img {
+  border-radius: 20px;
 }
 
 .track {
@@ -325,13 +331,39 @@ body.loading {
 .second-strip-image.strip-animation {
   overflow: hidden;
   padding-top: 1000px;
-  opacity: 0;
+
   transform: translateY(250px);
-}
-.second-strip-image.shows {
-  opacity: 1;
-  transform: translateY(0);
   transition:
     transform 1.2s cubic-bezier(0.16, 1, 0.3, 1),
     opacity 3s ease;
+  animation-name: slideUpAnimation;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;
+  animation-delay: 1.5s;
+}
+
+@keyframes slideUpAnimation {
+  0% {
+    transform: translateY(800px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.second-strip-image.shows {
+  opacity: 1;
+  transform: translateY(0); /*It rises to its original position.*/
+}
+.second-strip-image.shows span {
+  opacity: 1;
+  transform: translateY(0); /*It rises to its original position.*/
+}
+.track {
+  animation-play-state: paused;
+}
+
+.second-strip-image.shows .track {
+  animation-play-state: running;
 }
